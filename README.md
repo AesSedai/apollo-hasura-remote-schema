@@ -104,3 +104,13 @@ $ curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | bash
 $ cd hasura
 $ hasura metadata appy --admin-secret <hasura_admin_secret>
 ```
+
+Go to the Hasura CLI at http://127.0.0.1:8080 and you should see the custom mutation in the graphiql explorer pane. Try running it, eg:
+```
+mutation MyMutation {
+  user_set_username_via_remote_schema(jwt_uid: "abcdefghijklmnop", username: "abcd") {
+    updated_at
+    username
+  }
+}
+```
