@@ -1,0 +1,100 @@
+{
+  "name": "backend",
+  "version": "0.0.1",
+  "description": "TypeScript + Express API Server",
+  "author": "",
+  "license": "ISC",
+  "scripts": {
+    "start": "npm run build && cross-env NODE_ENV=production node build/server.js",
+    "dev": "cross-env NODE_ENV=development ts-node-dev --transpile-only src/server.ts",
+    "build": "tsc",
+    "test": "jest --forceExit --detectOpenHandles",
+    "lint": "eslint --ignore-path .gitignore --ext .ts src/",
+    "lint:fix": "npm run lint -- --fix",
+    "generate": "npm run generate-r && npm run generate-l",
+    "generate-l": "env-cmd -f ../.env graphql-codegen --config codegen-local.yml",
+    "generate-r": "env-cmd -f ../.env graphql-codegen --config codegen-remote.yml"
+  },
+  "eslintConfig": {
+    "root": true,
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+      "project": "./tsconfig.json"
+    },
+    "plugins": [
+      "@typescript-eslint"
+    ],
+    "extends": [
+      "standard-with-typescript",
+      "prettier",
+      "prettier/@typescript-eslint"
+    ],
+    "rules": {
+      "@typescript-eslint/no-unused-vars": "off",
+      "@typescript-eslint/no-non-null-assertion": "off"
+    }
+  },
+  "dependencies": {
+    "apollo-server-express": "^2.22.2",
+    "axios": "^0.21.1",
+    "bcrypt": "^5.0.1",
+    "class-transformer": "^0.4.0",
+    "class-validator": "^0.13.1",
+    "compression": "^1.7.4",
+    "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
+    "dotenv": "^8.2.0",
+    "envalid": "^7.1.0",
+    "express": "^4.17.1",
+    "graphql-request": "^3.4.0",
+    "graphql-tools": "^4.0.8",
+    "helmet": "^4.4.1",
+    "hpp": "^0.2.3",
+    "jest": "^26.6.3",
+    "lodash": "^4.17.21",
+    "morgan": "^1.10.0",
+    "ts-jest": "^26.5.4",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.2.3",
+    "winston": "^3.3.3",
+    "winston-daily-rotate-file": "^4.5.1"
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "^1.21.3",
+    "@graphql-codegen/introspection": "^1.18.1",
+    "@graphql-codegen/schema-ast": "^1.18.1",
+    "@graphql-codegen/typescript": "^1.21.1",
+    "@graphql-codegen/typescript-graphql-request": "^3.1.0",
+    "@graphql-codegen/typescript-operations": "^1.17.15",
+    "@graphql-codegen/typescript-resolvers": "^1.19.0",
+    "@graphql-tools/load-files": "^6.3.1",
+    "@types/bcrypt": "^3.0.0",
+    "@types/compression": "^1.7.0",
+    "@types/cookie-parser": "^1.4.2",
+    "@types/cors": "^2.8.10",
+    "@types/dotenv": "^8.2.0",
+    "@types/express": "^4.17.11",
+    "@types/helmet": "^4.0.0",
+    "@types/hpp": "^0.2.1",
+    "@types/jest": "^26.0.21",
+    "@types/jsonwebtoken": "^8.5.1",
+    "@types/lodash": "^4.14.168",
+    "@types/morgan": "^1.9.2",
+    "@types/node": "^14.14.35",
+    "@types/supertest": "^2.0.10",
+    "@types/winston": "^2.4.4",
+    "@typescript-eslint/eslint-plugin": "^4.18.0",
+    "@typescript-eslint/parser": "^4.18.0",
+    "change-case-all": "^1.0.12",
+    "env-cmd": "^10.1.0",
+    "eslint": "^7.22.0",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "husky": "^5.2.0",
+    "node-gyp": "^7.1.2",
+    "prettier": "^2.2.1",
+    "supertest": "^6.1.3",
+    "ts-node-dev": "^1.1.6"
+  }
+}

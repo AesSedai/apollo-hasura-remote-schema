@@ -1,0 +1,5 @@
+- name: apollo-server
+  definition:
+    url: http://server:4000/graphql
+    timeout_seconds: 60
+    forward_client_headers: true

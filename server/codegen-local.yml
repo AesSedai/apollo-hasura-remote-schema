@@ -1,0 +1,24 @@
+overwrite: true
+generates:
+  ./src/graphql/local/graphql.schema-remote.graphql:
+    schema: 
+        - ./src/graphql/remote/graphql.schema.graphql:
+            loader: ./src/graphql/local/file-loader.js
+    plugins:
+      - schema-ast
+  ./src/graphql/local/graphql.schema.graphql:
+      schema: http://127.0.0.1:4000/graphql
+      plugins:
+          - schema-ast      
+  ./src/graphql/local/graphql.ts:
+      schema: http://127.0.0.1:4000/graphql
+      plugins:
+          - typescript
+          - typescript-resolvers
+      config:
+          useIndexSignature: true
+          contextType: ./context#RemoteContext
+          skipTypename: false
+          addUnderscoreToArgsType: false
+          transformUnderscore: true
+          namingConvention: change-case-all#pascalCase

@@ -1,0 +1,69 @@
+services:
+    db:
+        image: postgres:12.6-alpine
+        environment:
+            POSTGRES_USER: ${POSTGRES_USER}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+            POSTGRES_DB: ${POSTGRES_DB}
+        ports:
+            - ${POSTGRES_PORT_HOST}:${POSTGRES_PORT_CONTAINER}
+        volumes:
+            - db:/var/lib/postgres/data
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+            interval: 5s
+            timeout: 5s
+            retries: 5            
+        networks:
+            - app
+
+    graphql-engine:
+        image: hasura/graphql-engine:v2.0.0-alpha.6.cli-migrations-v2
+        ports:
+            - ${HASURA_PORT_HOST}:${HASURA_PORT_CONTAINER}
+        depends_on:
+            db:
+                condition: service_healthy
+            server:
+                condition: service_healthy
+        restart: always
+        environment:
+            HASURA_GRAPHQL_LOG_LEVEL: warn
+            HASURA_GRAPHQL_DATABASE_URL: ${HASURA_GRAPHQL_DATABASE_URL}
+            HASURA_GRAPHQL_UNAUTHORIZED_ROLE: ${HASURA_GRAPHQL_UNAUTHORIZED_ROLE}
+            HASURA_GRAPHQL_ENABLE_REMOTE_SCHEMA_PERMISSIONS: "true"
+            ## enable the console served by server
+            HASURA_GRAPHQL_ENABLE_CONSOLE: "true" # set to "false" to disable console
+            ## enable debugging mode. It is recommended to disable this in production
+            HASURA_GRAPHQL_DEV_MODE: "true"
+            HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET}
+        networks:
+            - app
+
+    server:
+        build: ./server
+        environment:
+            PORT: 4000
+            HASURA_GRAPHQL_URL: ${HASURA_GRAPHQL_URL}
+            HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET}
+            GOOGLE_APPLICATION_CREDENTIALS: ${GOOGLE_APPLICATION_CREDENTIALS}
+            REACT_APP_FIREBASE_DATABASE_URL: ${REACT_APP_FIREBASE_DATABASE_URL}            
+        volumes:
+            - ./server:/usr/src/app    
+        ports:
+            - ${SERVER_PORT_HOST}:${SERVER_PORT_CONTAINER}
+        healthcheck:
+            test: ["CMD-SHELL", "netstat -tulnp | grep 4000"]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+        networks:
+            - app    
+
+networks:
+    app:
+        driver: bridge
+
+volumes:
+    db:
+        external: true
