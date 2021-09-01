@@ -4,7 +4,7 @@ import userService from "../../../services/users.service"
 const u = new userService()
 
 const users: Resolvers = {
-    Mutation: {
+    mutation_root: {
         user_set_username_via_remote_schema: async (root, args, context, info) => {
             const updatedUser = await u.setUsername(args)
             return updatedUser

@@ -1,21 +1,23 @@
-schema: 
-    - http://127.0.0.1:8080/v1/graphql:
-        headers:
-            X-Hasura-Admin-Secret: ${HASURA_GRAPHQL_ADMIN_SECRET}
+schema:
+  - http://127.0.0.1:8080/v1/graphql:
+      headers:
+        X-Hasura-Admin-Secret: ${HASURA_GRAPHQL_ADMIN_SECRET}
 documents:
-    - ./src/graphql/remote/**/*.tsx
-    - ./src/graphql/remote/**/*.ts
+  - ./src/graphql/remote/**/*.tsx
+  - ./src/graphql/remote/**/*.ts
 overwrite: true
 generates:
-    ./src/graphql/remote/graphql.ts:
-        plugins:
-            - typescript
-            - typescript-operations
-            - typescript-graphql-request
-        config:
-            skipTypename: false
-            addUnderscoreToArgsType: false
-            transformUnderscore: true
-    ./src/graphql/remote/graphql.schema.graphql:
-        plugins: 
-            - schema-ast
+  ./src/graphql/remote/graphql.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-graphql-request
+    config:
+      skipTypename: false
+      addUnderscoreToArgsType: false
+      transformUnderscore: true
+      nonOptionalTypename: true
+      scalars: { 'uuid': 'string' }
+  ./src/graphql/remote/graphql.schema.graphql:
+    plugins:
+      - schema-ast

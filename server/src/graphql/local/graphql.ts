@@ -13,11 +13,30 @@ export type Scalars = {
   Int: number;
   Float: number;
   timestamptz: any;
-  uuid: any;
-  /** The `Upload` scalar type represents a file upload. */
-  Upload: any;
+  uuid: string;
 };
 
+
+export type Query_Root = {
+  __typename: 'query_root';
+  required?: Maybe<Scalars['Int']>;
+};
+
+export type Mutation_Root = {
+  __typename: 'mutation_root';
+  user_set_username_via_remote_schema: Users;
+};
+
+
+export type Mutation_RootUser_Set_Username_Via_Remote_SchemaArgs = {
+  jwt_uid: Scalars['String'];
+  username: Scalars['String'];
+};
+
+export type Subscription_Root = {
+  __typename: 'subscription_root';
+  required?: Maybe<Scalars['Int']>;
+};
 
 /** Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'. */
 export type String_Comparison_Exp = {
@@ -52,70 +71,6 @@ export type String_Comparison_Exp = {
   _similar?: Maybe<Scalars['String']>;
 };
 
-/** mutation root */
-export type Mutation_Root = {
-  __typename?: 'mutation_root';
-  /** delete data from the table: "users" */
-  delete_users?: Maybe<Users_Mutation_Response>;
-  /** delete single row from the table: "users" */
-  delete_users_by_pk?: Maybe<Users>;
-  /** insert data into the table: "users" */
-  insert_users?: Maybe<Users_Mutation_Response>;
-  /** insert a single row into the table: "users" */
-  insert_users_one?: Maybe<Users>;
-  /** update data of the table: "users" */
-  update_users?: Maybe<Users_Mutation_Response>;
-  /** update single row of the table: "users" */
-  update_users_by_pk?: Maybe<Users>;
-  user_set_claim?: Maybe<User_Set_Claim_Output>;
-};
-
-
-/** mutation root */
-export type Mutation_RootDelete_UsersArgs = {
-  where: Users_Bool_Exp;
-};
-
-
-/** mutation root */
-export type Mutation_RootDelete_Users_By_PkArgs = {
-  id: Scalars['uuid'];
-};
-
-
-/** mutation root */
-export type Mutation_RootInsert_UsersArgs = {
-  objects: Array<Users_Insert_Input>;
-  on_conflict?: Maybe<Users_On_Conflict>;
-};
-
-
-/** mutation root */
-export type Mutation_RootInsert_Users_OneArgs = {
-  object: Users_Insert_Input;
-  on_conflict?: Maybe<Users_On_Conflict>;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdate_UsersArgs = {
-  _set?: Maybe<Users_Set_Input>;
-  where: Users_Bool_Exp;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdate_Users_By_PkArgs = {
-  _set?: Maybe<Users_Set_Input>;
-  pk_columns: Users_Pk_Columns_Input;
-};
-
-
-/** mutation root */
-export type Mutation_RootUser_Set_ClaimArgs = {
-  jwt_uid: Scalars['String'];
-};
-
 /** column ordering options */
 export enum Order_By {
   /** in ascending order, nulls last */
@@ -132,73 +87,6 @@ export enum Order_By {
   DescNullsLast = 'desc_nulls_last'
 }
 
-export type Query_Root = {
-  __typename?: 'query_root';
-  required?: Maybe<Scalars['Int']>;
-  /** fetch data from the table: "users" */
-  users: Array<Users>;
-  /** fetch aggregated fields from the table: "users" */
-  users_aggregate: Users_Aggregate;
-  /** fetch data from the table: "users" using primary key columns */
-  users_by_pk?: Maybe<Users>;
-};
-
-
-export type Query_RootUsersArgs = {
-  distinct_on?: Maybe<Array<Users_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Users_Order_By>>;
-  where?: Maybe<Users_Bool_Exp>;
-};
-
-
-export type Query_RootUsers_AggregateArgs = {
-  distinct_on?: Maybe<Array<Users_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Users_Order_By>>;
-  where?: Maybe<Users_Bool_Exp>;
-};
-
-
-export type Query_RootUsers_By_PkArgs = {
-  id: Scalars['uuid'];
-};
-
-export type Subscription_Root = {
-  __typename?: 'subscription_root';
-  /** fetch data from the table: "users" */
-  users: Array<Users>;
-  /** fetch aggregated fields from the table: "users" */
-  users_aggregate: Users_Aggregate;
-  /** fetch data from the table: "users" using primary key columns */
-  users_by_pk?: Maybe<Users>;
-};
-
-
-export type Subscription_RootUsersArgs = {
-  distinct_on?: Maybe<Array<Users_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Users_Order_By>>;
-  where?: Maybe<Users_Bool_Exp>;
-};
-
-
-export type Subscription_RootUsers_AggregateArgs = {
-  distinct_on?: Maybe<Array<Users_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Users_Order_By>>;
-  where?: Maybe<Users_Bool_Exp>;
-};
-
-
-export type Subscription_RootUsers_By_PkArgs = {
-  id: Scalars['uuid'];
-};
-
 
 /** Boolean expression to compare columns of type "timestamptz". All fields are combined with logical 'AND'. */
 export type Timestamptz_Comparison_Exp = {
@@ -213,14 +101,9 @@ export type Timestamptz_Comparison_Exp = {
   _nin?: Maybe<Array<Scalars['timestamptz']>>;
 };
 
-export type User_Set_Claim_Output = {
-  __typename?: 'user_set_claim_output';
-  status: Scalars['String'];
-};
-
 /** columns and relationships of "users" */
 export type Users = {
-  __typename?: 'users';
+  __typename: 'users';
   created_at: Scalars['timestamptz'];
   id: Scalars['uuid'];
   jwt_uid: Scalars['String'];
@@ -230,14 +113,14 @@ export type Users = {
 
 /** aggregated selection of "users" */
 export type Users_Aggregate = {
-  __typename?: 'users_aggregate';
+  __typename: 'users_aggregate';
   aggregate?: Maybe<Users_Aggregate_Fields>;
   nodes: Array<Users>;
 };
 
 /** aggregate fields of "users" */
 export type Users_Aggregate_Fields = {
-  __typename?: 'users_aggregate_fields';
+  __typename: 'users_aggregate_fields';
   count: Scalars['Int'];
   max?: Maybe<Users_Max_Fields>;
   min?: Maybe<Users_Min_Fields>;
@@ -283,7 +166,7 @@ export type Users_Insert_Input = {
 
 /** aggregate max on columns */
 export type Users_Max_Fields = {
-  __typename?: 'users_max_fields';
+  __typename: 'users_max_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['uuid']>;
   jwt_uid?: Maybe<Scalars['String']>;
@@ -293,7 +176,7 @@ export type Users_Max_Fields = {
 
 /** aggregate min on columns */
 export type Users_Min_Fields = {
-  __typename?: 'users_min_fields';
+  __typename: 'users_min_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['uuid']>;
   jwt_uid?: Maybe<Scalars['String']>;
@@ -303,7 +186,7 @@ export type Users_Min_Fields = {
 
 /** response of any mutation on the table "users" */
 export type Users_Mutation_Response = {
-  __typename?: 'users_mutation_response';
+  __typename: 'users_mutation_response';
   /** number of rows affected by the mutation */
   affected_rows: Scalars['Int'];
   /** data from the rows affected by the mutation */
@@ -313,7 +196,7 @@ export type Users_Mutation_Response = {
 /** on conflict condition type for table "users" */
 export type Users_On_Conflict = {
   constraint: Users_Constraint;
-  update_columns: Array<Users_Update_Column>;
+  update_columns?: Array<Users_Update_Column>;
   where?: Maybe<Users_Bool_Exp>;
 };
 
@@ -381,28 +264,6 @@ export type Uuid_Comparison_Exp = {
   _neq?: Maybe<Scalars['uuid']>;
   _nin?: Maybe<Array<Scalars['uuid']>>;
 };
-
-export type Query = {
-  __typename?: 'Query';
-  required?: Maybe<Scalars['Int']>;
-};
-
-export type Mutation = {
-  __typename?: 'Mutation';
-  user_set_username_via_remote_schema: Users;
-};
-
-
-export type MutationUser_Set_Username_Via_Remote_SchemaArgs = {
-  jwt_uid: Scalars['String'];
-  username: Scalars['String'];
-};
-
-export enum CacheControlScope {
-  Public = 'PUBLIC',
-  Private = 'PRIVATE'
-}
-
 
 export type WithIndex<TObject> = TObject & Record<string, any>;
 export type ResolversObject<TObject> = WithIndex<TObject>;
@@ -483,17 +344,16 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
-  String_comparison_exp: String_Comparison_Exp;
-  String: ResolverTypeWrapper<Scalars['String']>;
-  Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
-  mutation_root: ResolverTypeWrapper<Mutation_Root>;
-  order_by: Order_By;
-  query_root: ResolverTypeWrapper<Query_Root>;
+  query_root: ResolverTypeWrapper<{}>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
-  subscription_root: ResolverTypeWrapper<Subscription_Root>;
+  mutation_root: ResolverTypeWrapper<{}>;
+  String: ResolverTypeWrapper<Scalars['String']>;
+  subscription_root: ResolverTypeWrapper<{}>;
+  String_comparison_exp: String_Comparison_Exp;
+  Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
+  order_by: Order_By;
   timestamptz: ResolverTypeWrapper<Scalars['timestamptz']>;
   timestamptz_comparison_exp: Timestamptz_Comparison_Exp;
-  user_set_claim_output: ResolverTypeWrapper<User_Set_Claim_Output>;
   users: ResolverTypeWrapper<Users>;
   users_aggregate: ResolverTypeWrapper<Users_Aggregate>;
   users_aggregate_fields: ResolverTypeWrapper<Users_Aggregate_Fields>;
@@ -511,24 +371,19 @@ export type ResolversTypes = ResolversObject<{
   users_update_column: Users_Update_Column;
   uuid: ResolverTypeWrapper<Scalars['uuid']>;
   uuid_comparison_exp: Uuid_Comparison_Exp;
-  Query: ResolverTypeWrapper<{}>;
-  Mutation: ResolverTypeWrapper<{}>;
-  CacheControlScope: CacheControlScope;
-  Upload: ResolverTypeWrapper<Scalars['Upload']>;
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
-  String_comparison_exp: String_Comparison_Exp;
-  String: Scalars['String'];
-  Boolean: Scalars['Boolean'];
-  mutation_root: Mutation_Root;
-  query_root: Query_Root;
+  query_root: {};
   Int: Scalars['Int'];
-  subscription_root: Subscription_Root;
+  mutation_root: {};
+  String: Scalars['String'];
+  subscription_root: {};
+  String_comparison_exp: String_Comparison_Exp;
+  Boolean: Scalars['Boolean'];
   timestamptz: Scalars['timestamptz'];
   timestamptz_comparison_exp: Timestamptz_Comparison_Exp;
-  user_set_claim_output: User_Set_Claim_Output;
   users: Users;
   users_aggregate: Users_Aggregate;
   users_aggregate_fields: Users_Aggregate_Fields;
@@ -543,50 +398,28 @@ export type ResolversParentTypes = ResolversObject<{
   users_set_input: Users_Set_Input;
   uuid: Scalars['uuid'];
   uuid_comparison_exp: Uuid_Comparison_Exp;
-  Query: {};
-  Mutation: {};
-  Upload: Scalars['Upload'];
 }>;
 
-export type CacheControlDirectiveArgs = {   maxAge?: Maybe<Scalars['Int']>;
-  scope?: Maybe<CacheControlScope>; };
+export type CachedDirectiveArgs = {   ttl?: Scalars['Int'];
+  refresh?: Scalars['Boolean']; };
 
-export type CacheControlDirectiveResolver<Result, Parent, ContextType = RemoteContext, Args = CacheControlDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
-
-export type Mutation_RootResolvers<ContextType = RemoteContext, ParentType extends ResolversParentTypes['mutation_root'] = ResolversParentTypes['mutation_root']> = ResolversObject<{
-  delete_users?: Resolver<Maybe<ResolversTypes['users_mutation_response']>, ParentType, ContextType, RequireFields<Mutation_RootDelete_UsersArgs, 'where'>>;
-  delete_users_by_pk?: Resolver<Maybe<ResolversTypes['users']>, ParentType, ContextType, RequireFields<Mutation_RootDelete_Users_By_PkArgs, 'id'>>;
-  insert_users?: Resolver<Maybe<ResolversTypes['users_mutation_response']>, ParentType, ContextType, RequireFields<Mutation_RootInsert_UsersArgs, 'objects'>>;
-  insert_users_one?: Resolver<Maybe<ResolversTypes['users']>, ParentType, ContextType, RequireFields<Mutation_RootInsert_Users_OneArgs, 'object'>>;
-  update_users?: Resolver<Maybe<ResolversTypes['users_mutation_response']>, ParentType, ContextType, RequireFields<Mutation_RootUpdate_UsersArgs, 'where'>>;
-  update_users_by_pk?: Resolver<Maybe<ResolversTypes['users']>, ParentType, ContextType, RequireFields<Mutation_RootUpdate_Users_By_PkArgs, 'pk_columns'>>;
-  user_set_claim?: Resolver<Maybe<ResolversTypes['user_set_claim_output']>, ParentType, ContextType, RequireFields<Mutation_RootUser_Set_ClaimArgs, 'jwt_uid'>>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
+export type CachedDirectiveResolver<Result, Parent, ContextType = RemoteContext, Args = CachedDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
 export type Query_RootResolvers<ContextType = RemoteContext, ParentType extends ResolversParentTypes['query_root'] = ResolversParentTypes['query_root']> = ResolversObject<{
   required?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  users?: Resolver<Array<ResolversTypes['users']>, ParentType, ContextType, RequireFields<Query_RootUsersArgs, never>>;
-  users_aggregate?: Resolver<ResolversTypes['users_aggregate'], ParentType, ContextType, RequireFields<Query_RootUsers_AggregateArgs, never>>;
-  users_by_pk?: Resolver<Maybe<ResolversTypes['users']>, ParentType, ContextType, RequireFields<Query_RootUsers_By_PkArgs, 'id'>>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type Mutation_RootResolvers<ContextType = RemoteContext, ParentType extends ResolversParentTypes['mutation_root'] = ResolversParentTypes['mutation_root']> = ResolversObject<{
+  user_set_username_via_remote_schema?: Resolver<ResolversTypes['users'], ParentType, ContextType, RequireFields<Mutation_RootUser_Set_Username_Via_Remote_SchemaArgs, 'jwt_uid' | 'username'>>;
 }>;
 
 export type Subscription_RootResolvers<ContextType = RemoteContext, ParentType extends ResolversParentTypes['subscription_root'] = ResolversParentTypes['subscription_root']> = ResolversObject<{
-  users?: Resolver<Array<ResolversTypes['users']>, ParentType, ContextType, RequireFields<Subscription_RootUsersArgs, never>>;
-  users_aggregate?: Resolver<ResolversTypes['users_aggregate'], ParentType, ContextType, RequireFields<Subscription_RootUsers_AggregateArgs, never>>;
-  users_by_pk?: Resolver<Maybe<ResolversTypes['users']>, ParentType, ContextType, RequireFields<Subscription_RootUsers_By_PkArgs, 'id'>>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+  required?: SubscriptionResolver<Maybe<ResolversTypes['Int']>, "required", ParentType, ContextType>;
 }>;
 
 export interface TimestamptzScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['timestamptz'], any> {
   name: 'timestamptz';
 }
-
-export type User_Set_Claim_OutputResolvers<ContextType = RemoteContext, ParentType extends ResolversParentTypes['user_set_claim_output'] = ResolversParentTypes['user_set_claim_output']> = ResolversObject<{
-  status?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
 
 export type UsersResolvers<ContextType = RemoteContext, ParentType extends ResolversParentTypes['users'] = ResolversParentTypes['users']> = ResolversObject<{
   created_at?: Resolver<ResolversTypes['timestamptz'], ParentType, ContextType>;
@@ -638,24 +471,11 @@ export interface UuidScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
   name: 'uuid';
 }
 
-export type QueryResolvers<ContextType = RemoteContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
-  required?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-}>;
-
-export type MutationResolvers<ContextType = RemoteContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
-  user_set_username_via_remote_schema?: Resolver<ResolversTypes['users'], ParentType, ContextType, RequireFields<MutationUser_Set_Username_Via_Remote_SchemaArgs, 'jwt_uid' | 'username'>>;
-}>;
-
-export interface UploadScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Upload'], any> {
-  name: 'Upload';
-}
-
 export type Resolvers<ContextType = RemoteContext> = ResolversObject<{
-  mutation_root?: Mutation_RootResolvers<ContextType>;
   query_root?: Query_RootResolvers<ContextType>;
+  mutation_root?: Mutation_RootResolvers<ContextType>;
   subscription_root?: Subscription_RootResolvers<ContextType>;
   timestamptz?: GraphQLScalarType;
-  user_set_claim_output?: User_Set_Claim_OutputResolvers<ContextType>;
   users?: UsersResolvers<ContextType>;
   users_aggregate?: Users_AggregateResolvers<ContextType>;
   users_aggregate_fields?: Users_Aggregate_FieldsResolvers<ContextType>;
@@ -663,9 +483,6 @@ export type Resolvers<ContextType = RemoteContext> = ResolversObject<{
   users_min_fields?: Users_Min_FieldsResolvers<ContextType>;
   users_mutation_response?: Users_Mutation_ResponseResolvers<ContextType>;
   uuid?: GraphQLScalarType;
-  Query?: QueryResolvers<ContextType>;
-  Mutation?: MutationResolvers<ContextType>;
-  Upload?: GraphQLScalarType;
 }>;
 
 
@@ -675,7 +492,7 @@ export type Resolvers<ContextType = RemoteContext> = ResolversObject<{
  */
 export type IResolvers<ContextType = RemoteContext> = Resolvers<ContextType>;
 export type DirectiveResolvers<ContextType = RemoteContext> = ResolversObject<{
-  cacheControl?: CacheControlDirectiveResolver<any, any, ContextType>;
+  cached?: CachedDirectiveResolver<any, any, ContextType>;
 }>;
 
 

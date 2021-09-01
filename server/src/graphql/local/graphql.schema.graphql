@@ -1,4 +1,29 @@
-directive @cacheControl(maxAge: Int, scope: CacheControlScope) on FIELD_DEFINITION | OBJECT | INTERFACE
+schema {
+  query: query_root
+  mutation: mutation_root
+  subscription: subscription_root
+}
+
+"""whether this query should be cached (Hasura Cloud only)"""
+directive @cached(
+  """measured in seconds"""
+  ttl: Int! = 60
+
+  """refresh the cache entry"""
+  refresh: Boolean! = false
+) on QUERY
+
+type query_root {
+  required: Int
+}
+
+type mutation_root {
+  user_set_username_via_remote_schema(jwt_uid: String!, username: String!): users!
+}
+
+type subscription_root {
+  required: Int
+}
 
 """
 Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'.
@@ -53,65 +78,6 @@ input String_comparison_exp {
   _similar: String
 }
 
-"""mutation root"""
-type mutation_root {
-  """
-  delete data from the table: "users"
-  """
-  delete_users(
-    """filter the rows which have to be deleted"""
-    where: users_bool_exp!
-  ): users_mutation_response
-
-  """
-  delete single row from the table: "users"
-  """
-  delete_users_by_pk(id: uuid!): users
-
-  """
-  insert data into the table: "users"
-  """
-  insert_users(
-    """the rows to be inserted"""
-    objects: [users_insert_input!]!
-
-    """on conflict condition"""
-    on_conflict: users_on_conflict
-  ): users_mutation_response
-
-  """
-  insert a single row into the table: "users"
-  """
-  insert_users_one(
-    """the row to be inserted"""
-    object: users_insert_input!
-
-    """on conflict condition"""
-    on_conflict: users_on_conflict
-  ): users
-
-  """
-  update data of the table: "users"
-  """
-  update_users(
-    """sets the columns of the filtered rows to the given values"""
-    _set: users_set_input
-
-    """filter the rows which have to be updated"""
-    where: users_bool_exp!
-  ): users_mutation_response
-
-  """
-  update single row of the table: "users"
-  """
-  update_users_by_pk(
-    """sets the columns of the filtered rows to the given values"""
-    _set: users_set_input
-    pk_columns: users_pk_columns_input!
-  ): users
-  user_set_claim(jwt_uid: String!): user_set_claim_output
-}
-
 """column ordering options"""
 enum order_by {
   """in ascending order, nulls last"""
@@ -133,98 +99,6 @@ enum order_by {
   desc_nulls_last
 }
 
-type query_root {
-  required: Int
-
-  """
-  fetch data from the table: "users"
-  """
-  users(
-    """distinct select on columns"""
-    distinct_on: [users_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [users_order_by!]
-
-    """filter the rows returned"""
-    where: users_bool_exp
-  ): [users!]!
-
-  """
-  fetch aggregated fields from the table: "users"
-  """
-  users_aggregate(
-    """distinct select on columns"""
-    distinct_on: [users_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [users_order_by!]
-
-    """filter the rows returned"""
-    where: users_bool_exp
-  ): users_aggregate!
-
-  """fetch data from the table: "users" using primary key columns"""
-  users_by_pk(id: uuid!): users
-}
-
-type subscription_root {
-  """
-  fetch data from the table: "users"
-  """
-  users(
-    """distinct select on columns"""
-    distinct_on: [users_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [users_order_by!]
-
-    """filter the rows returned"""
-    where: users_bool_exp
-  ): [users!]!
-
-  """
-  fetch aggregated fields from the table: "users"
-  """
-  users_aggregate(
-    """distinct select on columns"""
-    distinct_on: [users_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [users_order_by!]
-
-    """filter the rows returned"""
-    where: users_bool_exp
-  ): users_aggregate!
-
-  """fetch data from the table: "users" using primary key columns"""
-  users_by_pk(id: uuid!): users
-}
-
 scalar timestamptz
 
 """
@@ -240,10 +114,6 @@ input timestamptz_comparison_exp {
   _lte: timestamptz
   _neq: timestamptz
   _nin: [timestamptz!]
-}
-
-type user_set_claim_output {
-  status: String!
 }
 
 """
@@ -347,7 +217,7 @@ on conflict condition type for table "users"
 """
 input users_on_conflict {
   constraint: users_constraint!
-  update_columns: [users_update_column!]!
+  update_columns: [users_update_column!]! = []
   where: users_bool_exp
 }
 
@@ -432,19 +302,3 @@ input uuid_comparison_exp {
   _neq: uuid
   _nin: [uuid!]
 }
-
-type Query {
-  required: Int
-}
-
-type Mutation {
-  user_set_username_via_remote_schema(jwt_uid: String!, username: String!): users!
-}
-
-enum CacheControlScope {
-  PUBLIC
-  PRIVATE
-}
-
-"""The `Upload` scalar type represents a file upload."""
-scalar Upload

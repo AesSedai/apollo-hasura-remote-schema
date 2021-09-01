@@ -4,6 +4,15 @@ schema {
   subscription: subscription_root
 }
 
+"""whether this query should be cached (Hasura Cloud only)"""
+directive @cached(
+  """measured in seconds"""
+  ttl: Int! = 60
+
+  """refresh the cache entry"""
+  refresh: Boolean! = false
+) on QUERY
+
 """
 Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'.
 """
@@ -347,7 +356,7 @@ on conflict condition type for table "users"
 """
 input users_on_conflict {
   constraint: users_constraint!
-  update_columns: [users_update_column!]!
+  update_columns: [users_update_column!]! = []
   where: users_bool_exp
 }
 

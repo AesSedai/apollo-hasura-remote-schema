@@ -18,7 +18,7 @@ services:
             - app
 
     graphql-engine:
-        image: hasura/graphql-engine:v2.0.0-alpha.6.cli-migrations-v2
+        image: hasura/graphql-engine:v2.0.8.cli-migrations-v3
         ports:
             - ${HASURA_PORT_HOST}:${HASURA_PORT_CONTAINER}
         depends_on:
@@ -46,8 +46,6 @@ services:
             PORT: 4000
             HASURA_GRAPHQL_URL: ${HASURA_GRAPHQL_URL}
             HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET}
-            GOOGLE_APPLICATION_CREDENTIALS: ${GOOGLE_APPLICATION_CREDENTIALS}
-            REACT_APP_FIREBASE_DATABASE_URL: ${REACT_APP_FIREBASE_DATABASE_URL}            
         volumes:
             - ./server:/usr/src/app    
         ports:

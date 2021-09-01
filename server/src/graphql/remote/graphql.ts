@@ -13,8 +13,9 @@ export type Scalars = {
   Int: number;
   Float: number;
   timestamptz: any;
-  uuid: any;
+  uuid: string;
 };
+
 
 /** Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'. */
 export type String_Comparison_Exp = {
@@ -51,7 +52,7 @@ export type String_Comparison_Exp = {
 
 /** mutation root */
 export type Mutation_Root = {
-  __typename?: 'mutation_root';
+  __typename: 'mutation_root';
   /** delete data from the table: "users" */
   delete_users?: Maybe<Users_Mutation_Response>;
   /** delete single row from the table: "users" */
@@ -131,7 +132,7 @@ export enum Order_By {
 }
 
 export type Query_Root = {
-  __typename?: 'query_root';
+  __typename: 'query_root';
   required?: Maybe<Scalars['Int']>;
   /** fetch data from the table: "users" */
   users: Array<Users>;
@@ -165,7 +166,7 @@ export type Query_RootUsers_By_PkArgs = {
 };
 
 export type Subscription_Root = {
-  __typename?: 'subscription_root';
+  __typename: 'subscription_root';
   /** fetch data from the table: "users" */
   users: Array<Users>;
   /** fetch aggregated fields from the table: "users" */
@@ -213,7 +214,7 @@ export type Timestamptz_Comparison_Exp = {
 
 /** columns and relationships of "users" */
 export type Users = {
-  __typename?: 'users';
+  __typename: 'users';
   created_at: Scalars['timestamptz'];
   id: Scalars['uuid'];
   jwt_uid: Scalars['String'];
@@ -223,14 +224,14 @@ export type Users = {
 
 /** aggregated selection of "users" */
 export type Users_Aggregate = {
-  __typename?: 'users_aggregate';
+  __typename: 'users_aggregate';
   aggregate?: Maybe<Users_Aggregate_Fields>;
   nodes: Array<Users>;
 };
 
 /** aggregate fields of "users" */
 export type Users_Aggregate_Fields = {
-  __typename?: 'users_aggregate_fields';
+  __typename: 'users_aggregate_fields';
   count: Scalars['Int'];
   max?: Maybe<Users_Max_Fields>;
   min?: Maybe<Users_Min_Fields>;
@@ -276,7 +277,7 @@ export type Users_Insert_Input = {
 
 /** aggregate max on columns */
 export type Users_Max_Fields = {
-  __typename?: 'users_max_fields';
+  __typename: 'users_max_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['uuid']>;
   jwt_uid?: Maybe<Scalars['String']>;
@@ -286,7 +287,7 @@ export type Users_Max_Fields = {
 
 /** aggregate min on columns */
 export type Users_Min_Fields = {
-  __typename?: 'users_min_fields';
+  __typename: 'users_min_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['uuid']>;
   jwt_uid?: Maybe<Scalars['String']>;
@@ -296,7 +297,7 @@ export type Users_Min_Fields = {
 
 /** response of any mutation on the table "users" */
 export type Users_Mutation_Response = {
-  __typename?: 'users_mutation_response';
+  __typename: 'users_mutation_response';
   /** number of rows affected by the mutation */
   affected_rows: Scalars['Int'];
   /** data from the rows affected by the mutation */
@@ -306,7 +307,7 @@ export type Users_Mutation_Response = {
 /** on conflict condition type for table "users" */
 export type Users_On_Conflict = {
   constraint: Users_Constraint;
-  update_columns: Array<Users_Update_Column>;
+  update_columns?: Array<Users_Update_Column>;
   where?: Maybe<Users_Bool_Exp>;
 };
 
@@ -382,11 +383,11 @@ export type UpdateUsernameMutationVariables = Exact<{
 
 
 export type UpdateUsernameMutation = (
-  { __typename?: 'mutation_root' }
+  { __typename: 'mutation_root' }
   & { update_users?: Maybe<(
-    { __typename?: 'users_mutation_response' }
+    { __typename: 'users_mutation_response' }
     & { returning: Array<(
-      { __typename?: 'users' }
+      { __typename: 'users' }
       & Pick<Users, 'id' | 'jwt_uid' | 'username' | 'created_at' | 'updated_at'>
     )> }
   )> }
@@ -398,9 +399,9 @@ export type GetUserQueryVariables = Exact<{
 
 
 export type GetUserQuery = (
-  { __typename?: 'query_root' }
+  { __typename: 'query_root' }
   & { users: Array<(
-    { __typename?: 'users' }
+    { __typename: 'users' }
     & Pick<Users, 'id'>
   )> }
 );
@@ -411,9 +412,9 @@ export type GetUserByJwtUidQueryVariables = Exact<{
 
 
 export type GetUserByJwtUidQuery = (
-  { __typename?: 'query_root' }
+  { __typename: 'query_root' }
   & { users: Array<(
-    { __typename?: 'users' }
+    { __typename: 'users' }
     & Pick<Users, 'id'>
   )> }
 );

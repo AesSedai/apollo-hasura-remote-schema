@@ -1,4 +1,4 @@
-import { ApolloServer } from "apollo-server-express"
+import { ApolloServer, makeExecutableSchema } from "apollo-server-express"
 import cookieParser from "cookie-parser"
 import cors from "cors"
 import express from "express"
@@ -9,8 +9,10 @@ import compression from "compression"
 import errorMiddleware from "./middlewares/error.middleware"
 import { logger, stream } from "./utils/logger"
 import { types as local } from "./graphql/local/localTypes"
-import { types as remote } from "./graphql/local/remoteTypes"
+import { types as remote } from "./graphql/remote/remoteTypes"
 import { resolvers } from "./graphql/local/resolvers"
+import { FilterTypes, wrapSchema } from "@graphql-tools/wrap"
+import { mergeTypeDefs } from "@graphql-tools/merge"
 
 class App {
     public server!: ApolloServer
@@ -39,12 +41,28 @@ class App {
     }
 
     private initializeApollo(app: express.Application) {
+        const wrappedRemoteSchema = wrapSchema({
+            schema: makeExecutableSchema({
+                typeDefs: remote
+            }),
+            transforms: [
+                new FilterTypes((type) => {
+                    if (type.toString().includes("root")) {
+                        return false
+                    }
+                    return true
+                })
+            ]
+        })
+
         this.server = new ApolloServer({
-            typeDefs: [remote, local],
-            resolvers: resolvers,
+            schema: makeExecutableSchema({
+                typeDefs: mergeTypeDefs([local, wrappedRemoteSchema]),
+                resolvers: resolvers
+            }),
             context: ({ req }) => ({
-                user_id: req.headers['x-hasura-user-id'],
-                role: req.headers['x-hasura-role']
+                user_id: req.headers["x-hasura-user-id"],
+                role: req.headers["x-hasura-role"]
             })
         })
         // this call doesn't like using { this.app } in constructor, so moving it into a separate fn makes it work

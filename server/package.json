@@ -11,7 +11,7 @@
     "test": "jest --forceExit --detectOpenHandles",
     "lint": "eslint --ignore-path .gitignore --ext .ts src/",
     "lint:fix": "npm run lint -- --fix",
-    "generate": "npm run generate-r && npm run generate-l",
+    "generate": "npm run generate-r && sleep 2 && npm run generate-l",
     "generate-l": "env-cmd -f ../.env graphql-codegen --config codegen-local.yml",
     "generate-r": "env-cmd -f ../.env graphql-codegen --config codegen-remote.yml"
   },
