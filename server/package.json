@@ -13,7 +13,10 @@
     "lint:fix": "npm run lint -- --fix",
     "generate": "npm run generate-r && sleep 2 && npm run generate-l",
     "generate-l": "env-cmd -f ../.env graphql-codegen --config codegen-local.yml",
-    "generate-r": "env-cmd -f ../.env graphql-codegen --config codegen-remote.yml"
+    "generate-r": "env-cmd -f ../.env graphql-codegen --config codegen-remote.yml",
+    "hasura:remove_schema": "env-cmd -f ../.env npx ts-node ./src/graphql/remote/utils/remove_remote_schema.ts",
+    "hasura:add_schema": "env-cmd -f ../.env npx ts-node ./src/graphql/remote/utils/add_remote_schema.ts",
+    "hasura:add_schema_permissions": "env-cmd -f ../.env npx ts-node ./src/graphql/remote/utils/add_remote_schema_permissions.ts"
   },
   "eslintConfig": {
     "root": true,

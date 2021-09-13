@@ -1,6 +1,8 @@
 ## Purpose
 The point of this sample is to demonstrate a full example of automatically importing the schema types from Hasura into a remote schema, to allow usage of Hasura types in a remote schema.
 
+Additionally, there is a utility for matching the remote schema's role permissions to the hasura schema role permissions.
+
 This is accomplished using the `graphql-codegen` package. See "Points of Interest" below for specifics.
 
 ## Architecture
@@ -20,7 +22,8 @@ This is accomplished using the `graphql-codegen` package. See "Points of Interes
         │   │   └── resolvers
         │   └── remote              - remote hasura graphql operations
         │       ├── mutations
-        │       └── queries
+        │       ├── queries
+        │       └── utils           - helpers for managing remote schema permissions
         ├── middlewares
         ├── services                - functionality pertaining to local/resolvers implementations, does the heavy lifting for custom apollo-server resolvers
         └── utils
@@ -50,7 +53,7 @@ Apollo-server config:
 server/src/app.ts             - Imports and merges types and resolvers. See initializeApollo()
 ```
 
-Generating graphql TS types:
+## Generating graphql TS types:
 ```
 $ cd server
 $ npm run generate                    # generate local and remote
@@ -59,6 +62,40 @@ $ npm run generate-r                  # generate remote
 ```
 
 !!After updating the apollo-server schema, be sure to reload the remote schema in Hasura!!
+
+## Generating remote schema permissions:
+Note: this repository assumes the name of the remote schema is `apollo-server`. Change this by changing the `HASURA_REMOTE_SCHEMA_NAME` parameter in the `.env` root file.
+If changes to the hasura role permissions cause a metadata conflict with the remote schema permissions, first drop the remote schema:
+(from `./server`)
+```
+$ npm run hasura:remove_schema        # remove remote schema from hasura.
+```
+
+Make necessary changes to the hasura role permissions, then re-add the remote schema:
+(from `./server`)
+```
+$ npm run hasura:add_schema           # add remote schema to hasura
+```
+
+Then, configure the allowed operations in the `roles` const in `server/src/graphql/remote/utils/add_remote_schema_permissions.ts`. The object is structed as follows:
+```
+const roles = {
+    user: {
+        Query: ["required"],
+        Mutation: [
+            "user_set_username_via_remote_schema"
+        ],
+        Subscription: [""]
+    }
+}
+```
+The above example would allow the `user` role to call the `required` query, and the `user_set_username_via_remote_schema` mutation. Configure as fits your use case.
+
+Then, generate the permissions:
+(from `./server`)
+```
+$ npm run hasura:add_schema_permissions          # add remote schema permissions to hasura
+```
 
 ## Full Setup
 

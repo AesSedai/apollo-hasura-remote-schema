@@ -2,4 +2,29 @@
   definition:
     url: http://server:4000/graphql
     timeout_seconds: 60
+    headers:
+    - value: Hasura
+      name: X-Server-Request-From
     forward_client_headers: true
+  permissions:
+  - role: user
+    definition:
+      schema: |-
+        schema  { query: query_root mutation: mutation_root }
+
+        scalar timestamptz
+
+        scalar uuid
+
+        type mutation_root { user_set_username_via_remote_schema(jwt_uid: String!, username: String!): users!
+        }
+
+        type query_root { required: Int
+        }
+
+        type users { created_at: timestamptz!
+          id: uuid!
+          jwt_uid: String!
+          updated_at: timestamptz!
+          username: String!
+        }
